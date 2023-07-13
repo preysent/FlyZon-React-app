@@ -22,21 +22,22 @@ router.post('/add', getUserId, [
 
 
 ], async (req, res) => {
-
-    const result = validationResult(req);
-    // if we get any validation error
-    if (!result.isEmpty()) {
-        return res.send({ errors: result.array() });
-    }
-
-
-    //Checking if it user then return invalid
-    if (req.user.status === 'user') {
-        return res.json({ msg: "invalid user" })
-    }
-
-
     try {
+        const errors = validationResult(req);
+        // if we get any validation error
+        if (!errors.isEmpty()) {
+            return res.send({ errors: errors.array() });
+
+        }
+
+
+        //Checking if it user then return invalid
+        if (req.user.seller) {
+            return res.json({ msg: "invalid user" })
+        }
+
+
+
         const { productTitle, description, price, brand, category, images } = req.body
         const sellerId = req.user.id
 
@@ -50,10 +51,10 @@ router.post('/add', getUserId, [
             images
         })
 
-        res.json(newProduct)
+        res.json({ msg: "product created" })
 
     } catch (err) {
-        res.send({ err })
+        res.send({ msg: "some error accour" })
     }
 })
 
@@ -63,13 +64,13 @@ router.post('/add', getUserId, [
 // Route 2: updating the existing product
 router.put('/update/:id', getUserId, async (req, res) => {
 
-    //Checking if it user then return invalid 
-    if (req.user.status === 'user') {
-        return res.json({ msg: "invalid user" })
-    }
-
-
     try {
+        //Checking if it user then return invalid 
+        if (req.user.seller) {
+            return res.json({ msg: "invalid user" })
+        }
+
+
         // getting the product from db
         let productToUpdate = await product.findById(req.params.id)
         if (!productToUpdate) return res.json({ msg: "product not found" })
@@ -130,7 +131,7 @@ router.delete('/delete/:id', getUserId, async (req, res) => {
         const newProduct = await product.findByIdAndDelete(req.params.id);
 
         res.json(newProduct)
-        
+
     } catch (err) {
         res.send({ err })
     }
@@ -140,19 +141,35 @@ router.delete('/delete/:id', getUserId, async (req, res) => {
 
 
 // Route 4: get product by category
-router.get('/fetch', async (req, res) => {
+router.get('/fetch/:category', async (req, res) => {
     try {
         // getting the product from db
-        let products= await product.find({category:req.body.category})
+        let products = await product.find({ category: req.params.category })
 
-        if (!products||products.length==0) 
-        return res.json({ msg: "product not found" })
+        if (!products || products.length == 0)
+            return res.json({ msg: "product not found" })
 
         res.json(products)
-        
+
     } catch (err) {
         res.send({ err })
     }
+})
+
+
+// Route 5: get one single product
+router.get('/:id', async (req, res) => {
+
+    try{
+        // getting the product details
+        const Product = await product.findById({_id:req.params.id})
+        
+        res.json(Product)
+
+    } catch (err) {
+        res.send({ err })
+    }
+
 })
 
 module.exports = router

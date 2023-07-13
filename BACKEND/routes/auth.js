@@ -24,24 +24,27 @@ router.post('/create', [
   body('email').isEmail(),
   body('password').isLength({ min: 5 }),
   body('address').notEmpty(),
-  body('status').notEmpty()
+  body('seller').notEmpty()
 
 ], async (req, res) => {
 
-  const result = validationResult(req);
-  // if we get any validation error
-  if (!result.isEmpty()) {
-    return res.send({ errors: result.array() });
-  }
-
   try {
 
-    //after validation we check is user already exist 
-    let getUser = await user.findOne({ email: req.body.email })
-    if (getUser) return res.status(500).json({ "msg": "user alredy exist try with another Email" })
+    const error = validationResult(req);
+    // if we get any validation error
+    if (!error.isEmpty()) {
+      return res.status(400).json({ error: error.array() });
+    }
 
     //getting body elements by destructuring
-    const { name, email, password, address, status } = req.body
+    const { name, email, password, address, seller } = req.body
+
+
+    //after validation we check is user already exist 
+    const existingUser = await user.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ msg: "User already exists. Please try with another email." });
+    }
 
     //generating salt and getting hash of the password
     let salt = await bcrypt.genSalt(10)
@@ -49,20 +52,20 @@ router.post('/create', [
 
 
     //creating user
-    const User = await user.create({
+    const createdUser = await user.create({
       name,
       email,
       password: hash,
       address,
-      status
+      seller
     })
 
 
     //creating data for generating jwt
     const data = {
       user: {
-        id: User._id,
-        status:User.status
+        id: createdUser._id,
+        seller: createdUser.seller
       }
     }
 
@@ -70,11 +73,12 @@ router.post('/create', [
     var token = await jwt.sign(data, Jwt_Str);
 
     //sending authentication token
-    res.json(token)
+    res.json({ token })
 
 
   } catch (err) {
-    res.send({ err })
+    console.error(err);
+    res.status(500).json({ msg: "Internal server error" });
   }
 })
 
@@ -91,13 +95,13 @@ router.post('/login', [
 
 ], async (req, res) => {
 
-  const result = validationResult(req);
-  // if we get any validation error
-  if (!result.isEmpty()) {
-    return res.send({ errors: result.array() });
-  }
-
   try {
+    const errors = validationResult(req);
+    // if we get any validation error
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
 
     //getting body elements by destructuring
     const { email, password } = req.body
@@ -105,21 +109,22 @@ router.post('/login', [
 
     //after validation we check is user already exist 
     let getUser = await user.findOne({ email: email })
-    if (!getUser) return res.status(500).json({ "msg": "User not exist" })
+    if (!getUser) return res.status(404).json({ msg: "User not found" });
 
 
     //compaire the given password and user's password
-    let conform = await bcrypt.compare(password, getUser.password)
-    if(!conform){
-      res.json({msg:"Invalid value"})
+    const isPasswordValid = await bcrypt.compare(password, getUser.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ msg: "Invalid credentials" });
     }
+
 
 
     //creating data for generating jwt
     const data = {
       user: {
         id: getUser._id,
-        status:getUser.status
+        seller: getUser.seller
       }
     }
 
@@ -127,11 +132,12 @@ router.post('/login', [
     var token = await jwt.sign(data, Jwt_Str);
 
     //sending authentication token
-    res.json(token)
+    res.json({ token })
 
 
   } catch (err) {
-    res.send({ err })
+    console.error(err);
+    res.status(500).json({ msg: "Internal server error" });
   }
 })
 
@@ -144,12 +150,18 @@ router.post('/getUser', getUserId, async (req, res) => {
 
   try {
 
-  // it select all imformation of user other then password
-  let getUser = await user.findOne({_id:req.user.id}).select('-password')
-  res.json({getUser})
+    // it select all imformation of user other then password
+    let User = await user.findById({ _id: req.user.id }).select('-password')
+
+    if (User)
+      res.json({ User, login: true })
+
+    else
+      res.status(404).json({ msg: "User not found", login: false });
 
   } catch (err) {
-    res.send({ err })
+    console.error(err);
+    res.status(500).json({ msg: "Internal server error", login: false });
   }
 })
 

@@ -1,23 +1,29 @@
 import React from 'react'
-import Items from './Items'
-import ImageSlider from './ImageSlider'
+import Home from './Home'
+import ProductPage from './ProductPage';
+
+import {
+  Switch,
+  Route,
+} from "react-router-dom";
 
 
 const Main = () => {
+
+
   return (
     <>
-    <ImageSlider/>
-        <section className=" bg-fuchsia-200 ">
-        
-        <div className="container flex flex-wrap m-auto gap-4 p-4 justify-center">
+      <Switch>
+        <Route  path={`/product/:id`}>
+          <ProductPage />
+        </Route>
 
-        <Items/>
-        <Items/>
-        <Items/>
-        <Items/>
-        <Items/>
-        </div>
-        </section>
+        <Route exact path="/">
+          <Home />
+        </Route>
+      </Switch>
+
+
     </>
   )
 }

@@ -2,37 +2,27 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-
   name: {
-    type:String, 
-    require:true
+    type: String,
+    required: true
   },
-
-  email:  {
-    type:String, 
-    require:true,
-    unique:true
+  email: {
+    type: String,
+    required: true,
+    unique: true
   },
-
   password: {
-    type:String, 
-    require:true,
-    min:[6, 'Must be at least 6']
+    type: String,
+    required: true,
   },
-
   address: {
-    type:String, 
-    require:true
+    type: String,
   },
-
-  status: {
-    type:String, 
-    enum: ['user', 'seller'],
-    require:true
-  },
-
-
-
+  seller: {
+    type: Boolean,
+    default: false,
+    required: true
+  }
 });
 
-module.exports =  mongoose.model('user', userSchema);
+module.exports = mongoose.model('User', userSchema);

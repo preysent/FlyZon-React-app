@@ -13,25 +13,35 @@ const ImageSlider = () => {
             elm.push(document.querySelector(`#slide-${i + 1}`))
         }
         setImgArr(elm)
-    }, [])
+
+
+        const interval = setInterval(() => {
+            setCounter(counter + 1)
+
+            if (counter > 2) setCounter(counter = 0)
+
+        }, 5000);
+
+        return () => clearInterval(interval);
+
+    }, [counter])
 
 
 
 
-    imgArr.forEach((img,index)=>{
-        img.style.left = (`${index*100}%`)
 
-    })    
+    imgArr.forEach((img, index) => {
+        img.style.left = (`${index * 100}%`)
 
-    setInterval(() => {
-         setCounter(counter+1)
-         if(counter>3) setCounter(counter=0)
-        imgArr.forEach((image)=>{
-            image.style.transform = `translateX(${-counter*100}%)`
-        })        
-    }, 10000);
+    })
 
-    //------------------------------------------------------------------------------
+    useEffect(() => {
+        imgArr.forEach((image, index) => {
+            image.style.transform = `translateX(-${counter * 100}%)`;
+        });
+    }, [counter, imgArr]);
+
+    // ------------------------------------------------------------------------------
 
 
 
@@ -39,19 +49,12 @@ const ImageSlider = () => {
 
     return (
         <>
-            <section className=" mx-auto flex items-center justify-center h-60 relative">
+            <section className=" mx-auto flex items-center justify-center h-60 relative overflow-hidden">
 
-                <div className=" w-full h-full bg-cover absolute" id="slide-1">
-                </div>
-
-                <div className=" w-full h-full bg-cover absolute" id="slide-2">
-                </div>
-
-                <div className=" w-full h-full bg-cover absolute" id="slide-3">
-                </div>
-
-                <div className=" w-full h-full bg-cover absolute" id="slide-4">
-                </div>
+                <div className=" w-full h-full bg-cover absolute" id="slide-1"></div>
+                <div className=" w-full h-full bg-cover absolute" id="slide-2"></div>
+                <div className=" w-full h-full bg-cover absolute" id="slide-3"></div>
+                <div className=" w-full h-full bg-cover absolute" id="slide-4"></div>
 
             </section>
         </>
