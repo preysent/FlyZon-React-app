@@ -2,27 +2,38 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true
+  
+  firstName: String,
+  lastName: String,
+  email: String,
+  password: String,
+  number: String,
+  seller:{
+    type:Boolean,
+    default:false
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true,
-  },
+
   address: {
-    type: String,
+    street: String,
+    city: String,
+    state: String,
+    country: String,
+    zipCode: String
   },
-  seller: {
-    type: Boolean,
-    default: false,
-    required: true
-  }
+
+  cart: [{
+    productId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Product'
+    },
+    quantity: Number
+  }],
+  
+  orders: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Order'
+  }]
 });
+
 
 module.exports = mongoose.model('User', userSchema);

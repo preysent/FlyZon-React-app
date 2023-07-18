@@ -42,10 +42,12 @@ export const loginUser = createAsyncThunk('loginUser', async ({ credentials }) =
 // Getting user details if use logged in
 export const getUserDetails = createAsyncThunk("getUserDetails", async (_, { getState }) => {
 
+    console.log("getting user details")
+
     // getState is second argument of createAsyncThunk function use to access state of the slice 
     const authToken = getState().user.authToken;
 
-    
+
     const responce = await fetch(`${host}/api/user/getUser`, {
         method: "POST",
         // body: JSON.stringify({ email, password }),
@@ -65,7 +67,16 @@ const userSlice = createSlice({
         user: {},
         authToken: localStorage.getItem("authToken"),
         error: false,
-        login:false
+        login: false
+    },
+
+    // Reducer for logout user 
+    reducers: {
+        logOutUser: (state, action) => {
+            state.user = {}
+            state.login = false
+            localStorage.clear()
+        }
     },
     extraReducers: (builder) => {
 
@@ -92,13 +103,14 @@ const userSlice = createSlice({
 
 
         // case if user is logded ing 
-        builder.addCase(getUserDetails.fulfilled, (state, action)=>{
+        builder.addCase(getUserDetails.fulfilled, (state, action) => {
             state.user = action.payload.User
-            state.login = action.payload.login            
+            state.login = action.payload.login
+
         })
 
-        
-        builder.addCase(getUserDetails.rejected, (state, action)=>{
+
+        builder.addCase(getUserDetails.rejected, (state, action) => {
             state.error = true
             state.login = false
         })
@@ -106,4 +118,5 @@ const userSlice = createSlice({
     }
 })
 
+export const { logOutUser } = userSlice.actions
 export default userSlice.reducer

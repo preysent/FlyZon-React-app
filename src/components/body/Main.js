@@ -6,6 +6,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import Cart from './Cart';
 
 
 const Main = () => {
@@ -14,8 +15,12 @@ const Main = () => {
   return (
     <>
       <Switch>
-        <Route  path={`/product/:id`}>
+        <Route exact path={`/product/:id`}>
           <ProductPage />
+        </Route>
+
+        <Route exact path="/cart">
+          <Cart />
         </Route>
 
         <Route exact path="/">

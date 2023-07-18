@@ -4,7 +4,6 @@ import Loading from './Loading'
 import ImageSlider from './ImageSlider'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchProducts } from '../../redux/slices/productSlice'
-import { getUserDetails } from '../../redux/slices/userSlice'
 
 
 
@@ -20,7 +19,6 @@ const Home = () => {
   // loading the products after cpmponent render
   useEffect(() => {
     dispatch(fetchProducts()); // fetch the products
-    dispatch(getUserDetails());
 
   }, [dispatch]);
 

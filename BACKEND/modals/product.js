@@ -3,42 +3,24 @@ const { Schema } = mongoose;
 
 
 
+// Product schema
 const productSchema = new Schema({
-
+  
+  // sellerID will use for varify the seller of the product
   sellerId:{
     type: mongoose.Schema.Types.ObjectId,
     ref:"user"
   },
-
-  productTitle: {
-    type:String, 
-    require:true
-  },
-
-  description:  {
-    type:[String], 
-    require:true
-  },
-
-  price: {
-    type:Number, 
-    require:true
-  },
-
-  brand: {
-    type:String, 
-  },
-
-  category: {
-    type:String, 
-  },
-
-  images: {
-  type:[String],
-  default:[]
-},
-
+  name: String,
+  description: [String],
+  price: Number,
+  brand: String,
+  category: String,
+  stock: Number,
+  images: [String]
 });
 
 
-module.exports =  mongoose.model('product', productSchema);
+
+
+module.exports =  mongoose.model('Product', productSchema);

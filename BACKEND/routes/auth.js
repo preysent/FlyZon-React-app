@@ -20,11 +20,16 @@ const getUserId = require('../Middlewere/getUserId')
 // Route 1: createing a user 
 router.post('/create', [
 
-  body('name').notEmpty().trim(),
+  body('firstName').notEmpty().trim(),
+  body('lastName').notEmpty().trim(),
   body('email').isEmail(),
+  body('number').notEmpty({min:10}),
   body('password').isLength({ min: 5 }),
-  body('address').notEmpty(),
-  body('seller').notEmpty()
+  body('address.street').notEmpty(),
+  body('address.city').notEmpty(),
+  body('address.state').notEmpty(),
+  body('address.country').notEmpty(),
+  body('address.zipCode').notEmpty(),
 
 ], async (req, res) => {
 
@@ -36,8 +41,10 @@ router.post('/create', [
       return res.status(400).json({ error: error.array() });
     }
 
+
+
     //getting body elements by destructuring
-    const { name, email, password, address, seller } = req.body
+    const { firstName, lastName, email, number, password, address, seller } = req.body
 
 
     //after validation we check is user already exist 
@@ -53,8 +60,10 @@ router.post('/create', [
 
     //creating user
     const createdUser = await user.create({
-      name,
+      firstName,
+      lastName,
       email,
+      number,
       password: hash,
       address,
       seller
@@ -73,7 +82,7 @@ router.post('/create', [
     var token = await jwt.sign(data, Jwt_Str);
 
     //sending authentication token
-    res.json({ token })
+    res.json({login:true, token })
 
 
   } catch (err) {
@@ -132,7 +141,7 @@ router.post('/login', [
     var token = await jwt.sign(data, Jwt_Str);
 
     //sending authentication token
-    res.json({ token })
+    res.json({login:true, token })
 
 
   } catch (err) {

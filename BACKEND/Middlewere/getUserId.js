@@ -11,6 +11,7 @@ const getUserId = (req, res, next) => {
     try {
         let decoded = jwt.verify(token, Jwt_Str);
         req.user = decoded.user;
+
         next();
     } catch (err) {
         res.status(400).json({ msg: "Invalid token" , login:false});

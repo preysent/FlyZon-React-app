@@ -3,14 +3,12 @@ import Head from './components/header/Head';
 import Main from './components/body/Main';
 import Footer from './components/footer/Footer';
 import Login from './components/Login';
-
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
 import SignUp from './components/SignUp';
-
 
 
 

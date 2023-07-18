@@ -21,6 +21,8 @@ app.use(express.json())
 //avalible routes == it use theat endpoing to response
 app.use('/api/user', require('./routes/auth'));
 app.use('/api/product', require('./routes/Product')) 
+app.use('/api/order', require('./routes/Order')) 
+app.use('/api/cart', require('./routes/Cart'))
 
   
 app.listen(port, () => {

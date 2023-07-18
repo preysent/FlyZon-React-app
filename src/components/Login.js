@@ -22,6 +22,7 @@ const Login = () => {
   const submitForm = async(event) => {
     event.preventDefault();
 
+    console.log(credentials)
      await dispatch(loginUser( {credentials} ))
 
     // after login user redirect to home page
@@ -31,9 +32,7 @@ const Login = () => {
   }
 
   const bgImage={
-              backgroundImage:"url(https://images.pexels.com/photos/7233354/pexels-photo-7233354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)",
-
-      
+              backgroundImage:"url(https://images.pexels.com/photos/7233354/pexels-photo-7233354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)"    
 }
 
   return (
