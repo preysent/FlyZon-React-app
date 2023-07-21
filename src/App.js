@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import SignUp from './components/SignUp';
 
+import './App.css'
 
 
 function App() {
@@ -30,9 +31,11 @@ function App() {
 
 
           <Route path='/'>
-            <Head />
-            <Main />
-            <Footer />
+            <div className='flex flex-col min-h-screen'>
+              <Head />
+              <Main />
+              <Footer />
+            </div>
           </Route>
 
         </Switch>

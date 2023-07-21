@@ -42,9 +42,9 @@ router.post('/create', [
     }
 
 
-
+    //  return res.json(req.body)
     //getting body elements by destructuring
-    const { firstName, lastName, email, number, password, address, seller } = req.body
+    const { firstName, lastName, email, number, password, address, seller=false } = req.body
 
 
     //after validation we check is user already exist 

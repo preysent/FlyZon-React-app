@@ -2,25 +2,28 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const host = process.env.REACT_APP_API_URL //enviroment variable for api 
 
 
-//creating the user
-export const createUser = createAsyncThunk("createUser", async ({ credentials }) => {
+// 1.creating the user
+export const createUser = createAsyncThunk("createUser", async ({ firstName, lastName, email, password, number, address }) => {
 
     //Destructuring the data form credentials
-    const { name, email, password, address, seller } = credentials
+    // const  = credentials
+    const requestBody = JSON.stringify({ firstName, lastName, email, password, number, address })
 
+    console.log(requestBody)
     const responce = await fetch(`${host}/api/user/create`, {
         method: "POST",
-        body: JSON.stringify({ name, email, password, address, seller }),
+        body: requestBody,
         headers: {
             "Content-type": "application/json; charset=UTF-8"
         }
     });
-    return responce.json()
+    return await responce.json()
+
 })
 
 
 
-// login the user
+// 2.login the user
 // create async thunk's finction take one obj of value
 export const loginUser = createAsyncThunk('loginUser', async ({ credentials }) => {
 
@@ -39,8 +42,9 @@ export const loginUser = createAsyncThunk('loginUser', async ({ credentials }) =
 })
 
 
-// Getting user details if use logged in
+// 3.Getting user details if use logged in
 export const getUserDetails = createAsyncThunk("getUserDetails", async (_, { getState }) => {
+    
 
     console.log("getting user details")
 
@@ -50,15 +54,45 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (_, { get
 
     const responce = await fetch(`${host}/api/user/getUser`, {
         method: "POST",
-        // body: JSON.stringify({ email, password }),
         headers: {
             "Content-type": "application/json; charset=UTF-8",
-            "authToken": authToken
+            "authToken": localStorage.getItem("authToken")
         }
     });
     return responce.json()
 
 });
+
+
+
+
+// 4.Adding to cart 
+export const addToCart = createAsyncThunk('addToCart', async ({ productId, quantity }) => {
+    const requestBody = JSON.stringify({ productId, quantity })
+
+    const responce = await fetch(`${host}/api/cart`, {
+        method: "POST",
+        body: requestBody,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "authToken": localStorage.getItem('authToken')
+        }
+    })
+    return await responce.json()
+
+})
+
+// 5. deleteing the cart element
+export const deleteTheCartElement = createAsyncThunk("deleteTheCartElement", async (id) => {
+    const responce = await fetch(`${host}/api/cart/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "authToken": localStorage.getItem('authToken')
+        }
+    })
+    return await responce.json()
+})
 
 
 const userSlice = createSlice({
@@ -67,7 +101,8 @@ const userSlice = createSlice({
         user: {},
         authToken: localStorage.getItem("authToken"),
         error: false,
-        login: false
+        login: false,
+        msg: ""
     },
 
     // Reducer for logout user 
@@ -75,6 +110,7 @@ const userSlice = createSlice({
         logOutUser: (state, action) => {
             state.user = {}
             state.login = false
+            state.authToken = null
             localStorage.clear()
         }
     },
@@ -82,8 +118,19 @@ const userSlice = createSlice({
 
         // case for creating user
         builder.addCase(createUser.fulfilled, (state, action) => {
-            state.authToken = action.payload.token
-            localStorage.setItem("authToken", action.payload.token)
+            if (action.payload.login) {
+                state.authToken = action.payload.token
+                state.login = true
+                console.log(action.payload)
+                localStorage.setItem("authToken", action.payload.token)
+                state.error = false
+
+                console.log(action.payload)
+            }
+            else {
+                state.error = true
+                state.msg = action.payload
+            }
         })
 
 
@@ -109,11 +156,39 @@ const userSlice = createSlice({
 
         })
 
-
         builder.addCase(getUserDetails.rejected, (state, action) => {
             state.error = true
             state.login = false
         })
+
+
+
+
+
+        // case for add to cart 
+        builder.addCase(addToCart.fulfilled, (state, action) => {
+
+            state.user = action.payload
+            // console.log(action.payload)
+            state.error = false
+            alert("add to cart sussefully")
+        })
+        builder.addCase(addToCart.rejected, (state, action) => {
+            state.error = true
+        })
+
+
+        // case for delete form cart 
+        builder.addCase(deleteTheCartElement.fulfilled, (state, action) => {
+            state.user.cart = action.payload
+            console.log(action.payload)
+            state.error = false
+            alert("cart deleted sussefully")
+        })
+        builder.addCase(deleteTheCartElement.rejected, (state, action) => {
+            state.error = true
+        })
+
 
     }
 })

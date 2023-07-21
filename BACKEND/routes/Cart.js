@@ -15,7 +15,7 @@ const { body, validationResult } = require('express-validator');
 // Route 1: add To Cart
 router.post('/', getUserId, [
     body('productId').notEmpty(),
-    body('quantity').isInt({ min: 1 }),
+    body('quantity'),
 ], async (req, res) => {
     try {
         // Validation, check if there are any validation errors
@@ -25,8 +25,8 @@ router.post('/', getUserId, [
         }
 
         //destructuring the values
-        const { productId, quantity } = req.body
-
+        const { productId, quantity=1 } = req.body
+        
         // Checking if the product exists
         const productExist = await Product.findById(productId);
         if (!productExist) {
@@ -53,7 +53,6 @@ router.post('/', getUserId, [
             user.cart.forEach(elm => {
                 if (elm.productId == productId)
                     elm.quantity += parseInt(quantity)
-                notInCart = false
             })
 
         // if product not found in cart
@@ -68,7 +67,7 @@ router.post('/', getUserId, [
         }
 
         await user.save();
-        res.json(user.cart);
+        res.json(user);
 
     } catch (error) {
         console.error('Error creating order:', error);
@@ -94,18 +93,18 @@ router.get('/', getUserId, async (req, res) => {
         if (cart.length < 1) {
             return res.status(400).json({ error: "Cart is empty" });
         }
+        
+        // till all Promise resolve await 
+        const cartList = await Promise.all(
+            //return promises of product details
+            cart.map(async (elm) => {
+            let product = await Product.findById(elm.productId)
+            return { product, quantity: elm.quantity };
+        })
+        );
 
-        // Extracting the product id form cart
-        const cartIds = findUser.cart.map(element => element.productId)
 
-        // getting all products wich in cart list 
-        const cartList = await Product.find({ _id: { $in: cartIds } })
-
-        // return res.json(cartList)
-        const cartListAmount = cartList.map((product, indx) => { return { product, quantity: findUser.cart[indx].quantity } })
-
-
-        res.json(cartListAmount)
+        res.json(cartList)
 
     } catch (error) {
         console.error('Error getting cart:', error);
@@ -131,7 +130,7 @@ router.delete('/:productId', getUserId, async (req, res) => {
         }
 
         // Filter out the product with the given productId
-        const newCart = cart.filter(elm => elm.productId !== req.params.productId);
+        const newCart = cart.filter(elm => elm.productId != req.params.productId);
 
         // Update the cart
         user.cart = newCart;

@@ -20,25 +20,23 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchProducts()); // fetch the products
 
-  }, [dispatch]);
+  }, []);
 
 
   return (
     <>
       <ImageSlider />
-    
       <section className={`${(mode === 'dark') ? 'bg-purple-900' : 'bg-fuchsia-200'}`} id="body">
 
-        <div className="container flex flex-wrap m-auto gap-4 p-4 justify-center">
-
-          {(!products.items)
-            ?<Loading />
-            :products.items.map((item) => (
-               <Items key={item._id} item={item} />
-            ))
-          }
-
-        </div>
+        {(!products.items.length > 0)
+          ? <Loading />
+          : <div className="container grid sm:grid-cols-3 lg:grid-cols-4 m-auto gap-4 p-4 justify-center">
+            {
+              products.items.map((item) => (
+                <Items key={item._id} item={item} />
+              ))
+            }
+          </div>}
       </section>
     </>
   )

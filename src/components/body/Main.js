@@ -6,15 +6,16 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Cart from './Cart';
+import Cart from './cart/Cart';
 
 
 const Main = () => {
 
 
   return (
-    <>
+    <div className='flex-grow'>
       <Switch>
+        
         <Route exact path={`/product/:id`}>
           <ProductPage />
         </Route>
@@ -23,13 +24,14 @@ const Main = () => {
           <Cart />
         </Route>
 
-        <Route exact path="/">
+        <Route exact path="/">          
           <Home />
         </Route>
+
       </Switch>
 
 
-    </>
+    </div>
   )
 }
 

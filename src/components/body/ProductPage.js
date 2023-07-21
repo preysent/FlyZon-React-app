@@ -4,37 +4,44 @@ import { useParams } from 'react-router-dom';
 import { fetchOneProduct } from '../../redux/slices/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from './Loading';
+import { addToCart } from '../../redux/slices/userSlice';
 
 
 const ProductPage = () => {
 
-    const dispatch = useDispatch()
-    let { mode, products } = useSelector(store => store)
-
-
-
+    const { id } = useParams()
 
     //the function run before the page rendering
     useLayoutEffect(() => {
         dispatch(fetchOneProduct(id))
     }, [])
 
-    const item = products.product
-    const { id } = useParams()
 
+    const dispatch = useDispatch()
+    let { mode, products } = useSelector(store => store)
+
+
+    const item = products.product
+
+    //adding product to cart 
+    const handleAddToCart = ()=>{
+        dispatch(addToCart({productId :item._id}))
+    }
 
 
     return (
         // if item is found then only component render
         (!item)
             ? <Loading />
-            : <div>
-
-
+            : <>
+            
                 <section className={`flex justify-center ${(mode === 'dark') ? "bg-purple-950 text-white" : ""}`}>
                     <div className="container   flex justify-center lg:justify-start relative flex-wrap lg:flex-nowrap">
 
-                        <img src={`${item.images[0]}`} alt="pro" />
+                        <div>
+                            <img src={`${item.images[0]}`} alt="pro" />
+                        </div>
+
                         <div className="absolute top-5 left-5">
                             <svg xmlns="http://www.w3.org/2000/svg" height="19" fill="currentColor" className="bi bi-heart"
                                 viewBox="0 0 16 16">
@@ -54,7 +61,7 @@ const ProductPage = () => {
                                     Buy Now
                                 </button>
 
-                                <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button onClick={handleAddToCart} className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full">
                                     Add to Cart
                                 </button>
                             </div>
@@ -85,7 +92,7 @@ const ProductPage = () => {
 
 
                 </section>
-            </div>
+            </>
     )
 }
 
