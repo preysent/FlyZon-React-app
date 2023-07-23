@@ -4,15 +4,18 @@ const { Schema } = mongoose;
 
 // Order schema
 const orderSchema = new Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  products: [{
+  productList: [{
     productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
     },
+    productTitle: String,
+    price: Number,
+    images: [String],
     quantity: {
       type: Number,
       default: 1

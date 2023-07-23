@@ -1,6 +1,7 @@
 const express = require('express')
 const Order = require('../modals/order') //order monal
 const Product = require('../modals/product')
+const User = require('../modals/user')
 const router = express.Router()
 
 // middlewere function to verify user
@@ -8,7 +9,6 @@ const getUserId = require('../Middlewere/getUserId')
 
 // importing express-validoter to validate request data
 const { body, validationResult } = require('express-validator');
-
 
 
 
@@ -40,32 +40,45 @@ router.post('/', getUserId, [
         const { products, totalAmount, shippingAddress } = req.body
         const userId = req.user.id
 
-        // getting ID's of all product 
-        const productIds = products.map(product => product.productId)
-
-        // finding the product in dataBase 
-        //******* $in allows to query multiple values in a single query
-        const fetchedProducts = await Product.find({ _id: { $in: productIds } }).select('price');
+        // checking is user exist
+        const user = await User.findById(userId)
+        if (!user) return res.status(404).json({ msg: "User not valid" });
 
 
+        // getting array of price and quantity 
+        let productList = await Promise.all(
+            products.map(async (product) => {
 
-            //by using price calculating totoal amount by db info
-            const prizeList = (products.map((product, index) => product.quantity * fetchedProducts[index].price ))
+                let { productTitle, price, images } = await Product.findById(product.productId)
+                    .select('productTitle')
+                    .select('price')
+                    .select('images')
 
-            const totalAmountDB = prizeList.reduce((total, amount) => total + parseInt(amount), 0);
+                return { productId: product.productId, productTitle, price, images, quantity: product.quantity }
+            })
+        )
 
-            // Comparing my calculated amount with request amount
-            if (totalAmount != totalAmountDB) {
-                return res.status(400).json({ error: 'Failed to create order' })
-            }
+        // calculatting the total amount with price receved form db
+        const totalAmountDB = productList.reduce((total, elm) => {
+            return total + elm.price * elm.quantity
+        }, 0)
 
-    
+        // Comparing my calculated amount with request amount
+        if (totalAmount < totalAmountDB) {
+            return res.status(400).json({ error: 'Failed to create order' })
+        }
+
+
         //creating new order 
         const newOrder = await Order.create({
-            userId, products, totalAmount, shippingAddress
+            userId, productList, totalAmount, shippingAddress
         })
 
-        res.json(newOrder)
+        // updating user cart 
+        user.cart = []
+        await user.save()
+
+        res.json({status:"ok"});
 
     } catch (error) {
         console.error('Error creating order:', error);

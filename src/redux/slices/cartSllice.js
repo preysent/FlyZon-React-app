@@ -43,6 +43,7 @@ const cartSlice = createSlice({
             state.subtotal = action.payload.reduce((total, cart) => {
                 return total + cart.product.price * cart.quantity
             }, 0)
+            else state.subtotal = 0
             state.loading = false
             state.error = false
         })

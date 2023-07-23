@@ -25,6 +25,12 @@ const productSlice = createSlice({
         isError: false
     },
 
+    reducers:{
+        clearOneProduct:(state, action)=>{
+            state.product = null
+        }
+    },
+
     //extra reducers use for async funtion result case
     extraReducers: (builder) => {
 

@@ -70,7 +70,7 @@ const Hedr = () => {
 
                             {<div
                                 className={`absolute bottom-7 left-6 text-white bg-red-700  px-1 rounded-lg 
-                           ${(User.cart.length > 0) ? "" : "hidden"}`}
+                           ${(User.cart.length) ? "" : "hidden"}`}
                             >
                                 {`${User.cart.length}`}
                             </div>}

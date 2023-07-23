@@ -14,7 +14,8 @@ const Home = () => {
   // function wich use to change the state
   const dispatch = useDispatch()
 
-  let { mode, products } = useSelector(store => store)
+  let  mode = useSelector(store => store.mode)
+  const products = useSelector(store => store.products)
 
   // loading the products after cpmponent render
   useEffect(() => {

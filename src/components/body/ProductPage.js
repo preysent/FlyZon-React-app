@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 
 import { fetchOneProduct } from '../../redux/slices/productSlice';
@@ -11,21 +11,22 @@ const ProductPage = () => {
 
     const { id } = useParams()
 
-    //the function run before the page rendering
-    useLayoutEffect(() => {
-        dispatch(fetchOneProduct(id))
-    }, [])
-
 
     const dispatch = useDispatch()
-    let { mode, products } = useSelector(store => store)
+    
+    let mode = useSelector(store => store.mode)  
+    const yourSelector = (state) => state.products.product;
+    const item = useSelector(yourSelector);
 
 
-    const item = products.product
+    //the function run before the page rendering
+    useEffect(() => {
+        dispatch(fetchOneProduct(id))
+      }, [id,dispatch]);
 
     //adding product to cart 
-    const handleAddToCart = ()=>{
-        dispatch(addToCart({productId :item._id}))
+    const handleAddToCart = () => {
+        dispatch(addToCart({ productId: item._id }))
     }
 
 
@@ -34,12 +35,12 @@ const ProductPage = () => {
         (!item)
             ? <Loading />
             : <>
-            
+
                 <section className={`flex justify-center ${(mode === 'dark') ? "bg-purple-950 text-white" : ""}`}>
-                    <div className="container   flex justify-center lg:justify-start relative flex-wrap lg:flex-nowrap">
+                    <div className="container  flex justify-center lg:justify-start relative flex-wrap lg:flex-nowrap">
 
                         <div>
-                            <img src={`${item.images[0]}`} alt="pro" />
+                            <img src={`${item.images[0]}`} alt="pro" className='max-h-[30rem]' />
                         </div>
 
                         <div className="absolute top-5 left-5">

@@ -9,7 +9,6 @@ export const createUser = createAsyncThunk("createUser", async ({ firstName, las
     // const  = credentials
     const requestBody = JSON.stringify({ firstName, lastName, email, password, number, address })
 
-    console.log(requestBody)
     const responce = await fetch(`${host}/api/user/create`, {
         method: "POST",
         body: requestBody,
@@ -45,9 +44,6 @@ export const loginUser = createAsyncThunk('loginUser', async ({ credentials }) =
 // 3.Getting user details if use logged in
 export const getUserDetails = createAsyncThunk("getUserDetails", async (_, { getState }) => {
     
-
-    console.log("getting user details")
-
     // getState is second argument of createAsyncThunk function use to access state of the slice 
     const authToken = getState().user.authToken;
 
@@ -56,7 +52,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (_, { get
         method: "POST",
         headers: {
             "Content-type": "application/json; charset=UTF-8",
-            "authToken": localStorage.getItem("authToken")
+            "authToken": authToken
         }
     });
     return responce.json()
@@ -120,12 +116,11 @@ const userSlice = createSlice({
         builder.addCase(createUser.fulfilled, (state, action) => {
             if (action.payload.login) {
                 state.authToken = action.payload.token
-                state.login = true
-                console.log(action.payload)
+                state.login = action.payload.login
+                state.user = action.payload.User
+            
                 localStorage.setItem("authToken", action.payload.token)
                 state.error = false
-
-                console.log(action.payload)
             }
             else {
                 state.error = true
@@ -151,6 +146,7 @@ const userSlice = createSlice({
 
         // case if user is logded ing 
         builder.addCase(getUserDetails.fulfilled, (state, action) => {
+            console.log(action.payload)
             state.user = action.payload.User
             state.login = action.payload.login
 
@@ -169,7 +165,6 @@ const userSlice = createSlice({
         builder.addCase(addToCart.fulfilled, (state, action) => {
 
             state.user = action.payload
-            // console.log(action.payload)
             state.error = false
             alert("add to cart sussefully")
         })
@@ -181,7 +176,6 @@ const userSlice = createSlice({
         // case for delete form cart 
         builder.addCase(deleteTheCartElement.fulfilled, (state, action) => {
             state.user.cart = action.payload
-            console.log(action.payload)
             state.error = false
             alert("cart deleted sussefully")
         })

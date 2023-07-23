@@ -21,7 +21,7 @@ const Cart = () => {
         // run only if user is logged in
         user.login && dispatch(getCartItems())
 
-    },[user.login])
+    },[dispatch,user.login])
 
     return (
         (cart.loading)

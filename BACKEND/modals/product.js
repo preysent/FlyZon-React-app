@@ -11,7 +11,7 @@ const productSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref:"user"
   },
-  name: String,
+  productTitle: String,
   description: [String],
   price: Number,
   brand: String,

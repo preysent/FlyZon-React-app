@@ -45,11 +45,11 @@ const UserSlide = () => {
         <>
             {/*  Slide trigger */}
             <div className="relative inline-block text-left ">
-                <button 
-                id="slideButton" 
-                type="button" 
-                onClick={toggleDropdown} 
-                className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700">
+                <button
+                    id="slideButton"
+                    type="button"
+                    onClick={toggleDropdown}
+                    className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700">
 
                     <span>{`${User.firstName}`}</span>
 
@@ -61,9 +61,9 @@ const UserSlide = () => {
 
 
                 {/* user details slide */}
-                <div 
-                id="slideMenu" 
-                className={` ${hidden} absolute right-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-2`}
+                <div
+                    id="slideMenu"
+                    className={` ${hidden} absolute right-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-2`}
                 >
                     <h2 className='block px-4 py-2 text-center bg-gray-100'>Your Info</h2>
 
@@ -82,10 +82,36 @@ const UserSlide = () => {
                         ))}
                     </li>
 
-                    <button 
-                    type='button' 
-                    onClick={logOut} 
-                    className='block px-4 py-2 bg-purple-400 float-right font-bold text-stone-100 rounded-xl hover:bg-purple-700'>
+                    <hr className='w-48 h-[1px] mx-auto my-2 bg-purple-400 border-0 rounded ' />
+
+                    {/* Order view page links */}
+                    
+                    <div className='py-2 px-4  '>
+                        <h4 className='text-lg font-bold underline text-center mb-2'>Your Orders</h4>
+
+                        <li className='flex justify-between hover:bg-purple-400 px-2 rounded mb-2'>
+                            <div>$500</div>
+                            <div className='text-sm'>pending</div>
+                        </li>
+
+
+                        <li className='flex justify-between hover:bg-purple-400 px-2 rounded mb-2'>
+                            <div>$500</div>
+                            <div className='text-sm'>pending</div>
+                        </li>
+
+
+                        <li className='flex justify-between hover:bg-purple-400 px-2 rounded mb-2'>
+                            <div>$500</div>
+                            <div className='text-sm'>pending</div>
+                        </li>
+
+                    </div>
+
+                    <button
+                        type='button'
+                        onClick={logOut}
+                        className='block px-4 py-2 bg-purple-400 float-right font-bold text-stone-100 rounded-xl hover:bg-purple-700'>
                         Logout
                     </button>
 

@@ -25,7 +25,6 @@ const SignUp = () => {
   const onchange = async (e) => {
     //importent syntex for value
     await setCredentials({ ...credentials, [e.target.name]: e.target.value })
-    // console.log(credentials)
   }
 
   // destructring all credentials from state 
@@ -60,17 +59,14 @@ const SignUp = () => {
       country: "India",
       zipCode: ""
     })
-
-
-  }
  
-  console.log("print user fter dispatch")
-  console.log(user)
-  setTimeout(()=>{
-    if (user.login)
-      history.push('/')
+  
+  }
 
-  },3000)
+  
+  if (user.login)
+  history.push('/')
+
 
   const bgImage = {
     backgroundImage: "url(https://images.pexels.com/photos/7233354/pexels-photo-7233354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)"

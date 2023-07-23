@@ -9,9 +9,8 @@ const Head = () => {
   const dispatch = useDispatch()
   // getting user details after component mount
   useEffect(() => {
-    console.log("calling getUserDetails")
     dispatch(getUserDetails())
-  })
+  },[dispatch])
 
   return (
     <div>

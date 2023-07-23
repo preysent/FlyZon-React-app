@@ -82,7 +82,7 @@ router.post('/create', [
     var token = await jwt.sign(data, Jwt_Str);
 
     //sending authentication token
-    res.json({login:true, token })
+    res.json({login:true, token, User:createdUser })
 
 
   } catch (err) {
