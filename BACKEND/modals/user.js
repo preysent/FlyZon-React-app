@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  
+
   firstName: String,
   lastName: String,
   email: String,
   password: String,
   number: String,
-  seller:{
-    type:Boolean,
-    default:false
+  seller: {
+    type: Boolean,
+    default: false
   },
 
   address: {
@@ -28,10 +28,14 @@ const userSchema = new Schema({
     },
     quantity: Number
   }],
-  
+
   orders: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Order'
+    oId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Order'
+    },
+    oAmount: Number,
+    oStatus: String
   }]
 });
 

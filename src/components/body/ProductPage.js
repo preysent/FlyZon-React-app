@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { fetchOneProduct } from '../../redux/slices/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from './Loading';
-import { addToCart } from '../../redux/slices/userSlice';
+import { addToCart, getUserDetails } from '../../redux/slices/userSlice';
+import { placeOrder } from '../../redux/slices/orderSlice';
 
 
 const ProductPage = () => {
@@ -13,20 +14,38 @@ const ProductPage = () => {
 
 
     const dispatch = useDispatch()
-    
-    let mode = useSelector(store => store.mode)  
-    const yourSelector = (state) => state.products.product;
-    const item = useSelector(yourSelector);
+
+    let mode = useSelector(store => store.mode)
+    const item = useSelector(state => state.products.product);
+    const address = useSelector(store => store.user.user.address)
 
 
     //the function run before the page rendering
     useEffect(() => {
         dispatch(fetchOneProduct(id))
-      }, [id,dispatch]);
+    }, [id, dispatch]);
 
     //adding product to cart 
     const handleAddToCart = () => {
         dispatch(addToCart({ productId: item._id }))
+    }
+
+
+    // Order one product 
+    const handleBuyNow = async () => {
+
+        const productId = item._id
+        const quantity = 1
+        const products = [{ productId, quantity }]
+        const totalAmount = item.price
+        const shippingAddress = address
+        const type = "one"
+        const object = { products, totalAmount, shippingAddress }
+
+        const responce = await dispatch(placeOrder({ object, type }))
+
+        if (responce.payload.status === "ok")
+            dispatch(getUserDetails())
     }
 
 
@@ -58,7 +77,7 @@ const ProductPage = () => {
 
                             <div className="flex gap-3 py-1">
 
-                                <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button onClick={handleBuyNow} className=" bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full">
                                     Buy Now
                                 </button>
 
@@ -77,15 +96,10 @@ const ProductPage = () => {
                             </div>
 
                             {/* description of the product  */}
-
                             <div className='py-6'>
-
-                                {
-                                    item.description.map((line) => {
-                                        return <p className='' key={line}>{`${line}`}</p>
-                                    })
-                                }
-
+                                {item.description.map((line) => {
+                                    return <p className='' key={line}>{`${line}`}</p>
+                                })}
                             </div>
                         </div>
 

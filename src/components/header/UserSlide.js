@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOutUser } from '../../redux/slices/userSlice'
+import { Link } from 'react-router-dom'
 
 const UserSlide = () => {
 
@@ -42,8 +43,7 @@ const UserSlide = () => {
 
 
     return (
-        <>
-            {/*  Slide trigger */}
+        <>{/*  Slide trigger */}
             <div className="relative inline-block text-left ">
                 <button
                     id="slideButton"
@@ -65,6 +65,7 @@ const UserSlide = () => {
                     id="slideMenu"
                     className={` ${hidden} absolute right-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-2`}
                 >
+
                     <h2 className='block px-4 py-2 text-center bg-gray-100'>Your Info</h2>
 
                     <li className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
@@ -85,26 +86,24 @@ const UserSlide = () => {
                     <hr className='w-48 h-[1px] mx-auto my-2 bg-purple-400 border-0 rounded ' />
 
                     {/* Order view page links */}
-                    
-                    <div className='py-2 px-4  '>
+
+                    <div className='py-2'>
                         <h4 className='text-lg font-bold underline text-center mb-2'>Your Orders</h4>
 
-                        <li className='flex justify-between hover:bg-purple-400 px-2 rounded mb-2'>
-                            <div>$500</div>
-                            <div className='text-sm'>pending</div>
-                        </li>
+                        {(!User.orders.length)
+                            ? <p>!..not found</p>
+                            : <>
+                                {User.orders.map((order) => {
 
-
-                        <li className='flex justify-between hover:bg-purple-400 px-2 rounded mb-2'>
-                            <div>$500</div>
-                            <div className='text-sm'>pending</div>
-                        </li>
-
-
-                        <li className='flex justify-between hover:bg-purple-400 px-2 rounded mb-2'>
-                            <div>$500</div>
-                            <div className='text-sm'>pending</div>
-                        </li>
+                                    return <Link key={order.oId} to={`/order/${order.oId}`}>
+                                        <li onClick={toggleDropdown} className='flex justify-between hover:bg-purple-400 p-2 rounded  cursor-pointer'>
+                                            <div>$ {order.oAmount}/-</div>
+                                            <div className='text-sm'>{order.oStatus}</div>
+                                        </li>
+                                    </Link>
+                                })}
+                            </>
+                        }
 
                     </div>
 

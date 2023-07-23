@@ -7,6 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import Cart from './cart/Cart';
+import Order from './Order';
 
 
 const Main = () => {
@@ -22,6 +23,10 @@ const Main = () => {
 
         <Route exact path="/cart">
           <Cart />
+        </Route>
+
+        <Route exact path="/order/:oId">
+          <Order />
         </Route>
 
         <Route exact path="/">          

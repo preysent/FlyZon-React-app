@@ -10,7 +10,7 @@ const { body, validationResult } = require('express-validator');
 
 //Json Web Token
 const jwt = require('jsonwebtoken');
-const Jwt_Str = "Flyzon a web app"
+const Jwt_Str = process.env.JWT_STR
 
 //importing middlewere function to get user id
 const getUserId = require('../Middlewere/getUserId')

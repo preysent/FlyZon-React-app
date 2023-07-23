@@ -3,5 +3,4 @@
 }
 *:focus{
     outline: 2px dotted rgb(236, 88, 236);
-    border-radius: 5px;
 }

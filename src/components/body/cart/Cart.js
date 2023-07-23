@@ -26,7 +26,14 @@ const Cart = () => {
     return (
         (cart.loading)
         ?<Loading />
-        :<>
+        : (!cart.cartList.length)
+        //   if cart is empty 
+          ?<div className='flex justify-center items-center min-h-[20rem]'>
+            <h3 className='text-purple-700 font-bold text-2xl'>Your Cart is Empty</h3>
+            </div>
+
+        //   if cart have some product 
+          :<>
             <div className={`${(mode === 'dark') ? 'bg-purple-800 text-slate-200' : 'bg-fuchsia-100'} `}>
                 <div className="container mx-auto py-8 px-1">
                     <h2 className="text-2xl font-semibold mb-4 px-2">Shopping Cart</h2>

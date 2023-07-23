@@ -14,8 +14,8 @@ const { body, validationResult } = require('express-validator');
 
 
 
-// Route 1: Order placing 
-router.post('/', getUserId, [
+// Route 1: Order placing  |  here type indicate the is one order placing or cart items 
+router.post('/:type', getUserId, [
 
     body('products').isArray({ min: 1 }),
     body('products.*.productId').notEmpty(), // importent  syntex
@@ -33,7 +33,7 @@ router.post('/', getUserId, [
         // validation is there any validation error
         const error = validationResult(req)
         if (!error.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: error.array() ,body:req.body});
         }
 
         // destucturing the data form body
@@ -74,16 +74,52 @@ router.post('/', getUserId, [
             userId, productList, totalAmount, shippingAddress
         })
 
-        // updating user cart 
+        // updating user cart | if order type is cart
+        if(req.params.type!="one")
         user.cart = []
+
+        // creting order for user orders list 
+        const oId = newOrder._id
+        const oAmount = newOrder.totalAmount
+        const oStatus = newOrder.status
+        const order = { oId, oAmount, oStatus }
+
+        await user.orders.push(order)
         await user.save()
 
-        res.json({status:"ok"});
+        res.json({ status: "ok", oId: newOrder._id });
 
     } catch (error) {
         console.error('Error creating order:', error);
         res.status(500).json({ error: 'Failed to create order' });
     }
+})
+
+
+
+// Route 2. getting order detals 
+router.get('/:oId', getUserId, async (req, res) => {
+
+    try {
+        // checking user exists 
+        const getUser = await User.findById(req.user.id)
+        if (!getUser) return res.status(404).json({ msg: "User not valid" });
+
+        // checking order exists
+        const order = await Order.findById(req.params.oId)
+
+        // checking is user correct  |  equals method uer to deep compaire of id's
+        if (!getUser._id.equals(order.userId)) return res.status(401).json({ msg: "User not valid"});
+
+
+        res.json({status:"ok",order})
+
+    } catch (error) {
+        console.error('Error creating order:', error);
+        res.status(500).json({ error: 'Failed to create order' });
+    }
+
+
 })
 
 module.exports = router;
