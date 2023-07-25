@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../redux/slices/userSlice'
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 const Login = () => {
 
@@ -19,21 +19,21 @@ const Login = () => {
 
 
   //submit form handlar wich call async funtion
-  const submitForm = async(event) => {
+  const submitForm = async (event) => {
     event.preventDefault();
 
     console.log(credentials)
-     await dispatch(loginUser( {credentials} ))
+    await dispatch(loginUser({ credentials }))
 
     // after login user redirect to home page
-     history.push("/")
+    history.push("/")
     setCredentials({ email: "", password: "" })
 
   }
 
-  const bgImage={
-              backgroundImage:"url(https://images.pexels.com/photos/7233354/pexels-photo-7233354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)"    
-}
+  const bgImage = {
+    backgroundImage: "url(https://images.pexels.com/photos/7233354/pexels-photo-7233354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)"
+  }
 
   return (
     <>
@@ -41,7 +41,7 @@ const Login = () => {
 
         {/* Division for side info */}
 
-        
+
 
         {/* division for the login page  */}
         <div className="bg-white p-8 rounded shadow-lg">
@@ -66,6 +66,12 @@ const Login = () => {
             <button type="submit" className={`w-full  bg-purple-800 text-white  py-2 px-4 rounded hover:bg-purple-600`}>Login</button>
           </form>
 
+
+          <p className='text-xs pt-2'>Create new Account
+            <Link to="/signUp">
+              <span className='text-blue-700 hover:font-bold font-semibold'>SingUp</span>
+            </Link>
+          </p>
         </div>
 
       </section>

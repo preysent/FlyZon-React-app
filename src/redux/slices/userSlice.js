@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-const host = process.env.REACT_APP_API_URL //enviroment variable for api 
+// const host = process.env.REACT_APP_API_URL //enviroment variable for api 
+const host = "https://flyzon-backend-api.onrender.com"
 
 
 // 1.creating the user

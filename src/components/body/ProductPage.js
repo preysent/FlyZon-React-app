@@ -15,9 +15,10 @@ const ProductPage = () => {
 
     const dispatch = useDispatch()
 
+    // getting details from store
     let mode = useSelector(store => store.mode)
     const item = useSelector(state => state.products.product);
-    const address = useSelector(store => store.user.user.address)
+    const User = useSelector(store => store.user.user)
 
 
     //the function run before the page rendering
@@ -38,7 +39,7 @@ const ProductPage = () => {
         const quantity = 1
         const products = [{ productId, quantity }]
         const totalAmount = item.price
-        const shippingAddress = address
+        const shippingAddress = User.address
         const type = "one"
         const object = { products, totalAmount, shippingAddress }
 
