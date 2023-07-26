@@ -16,7 +16,7 @@ const Navbar = () => {
                     <Link to="/">Electronics</Link>
                     <Link to="/">Mobile</Link>
                     <Link to="/">Grocery</Link>
-                    <Link to="/">Appliances</Link>
+                    <Link to="/admin">Appliances</Link>
                 </nav>
 
             </section>

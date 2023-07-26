@@ -11,6 +11,7 @@ import {
 import SignUp from './components/SignUp';
 
 import './App.css'
+import Admin from './components/Admin/Admin';
 
 
 function App() {
@@ -20,23 +21,30 @@ function App() {
 
         <Switch>
 
+          {/* route for admin panel  */}
+          <Route  path="/admin">
+            <Admin />
+          </Route>
+          
+          {/* route for login page  */}
           <Route exact path="/login">
             <Login />
           </Route>
 
-
+          {/* route for signup page  */}
           <Route exact path="/signUp">
             <SignUp />
           </Route>
 
 
-          <Route path='/'>
+          <Route exact path='/'>
             <div className='flex flex-col min-h-screen'>
               <Head />
               <Main />
               <Footer />
             </div>
           </Route>
+
 
         </Switch>
 

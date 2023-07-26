@@ -21,7 +21,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchProducts()); // fetch the products
 
-  }, []);
+  }, [dispatch]);
 
 
   return (

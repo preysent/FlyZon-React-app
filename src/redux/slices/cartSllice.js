@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// const host = process.env.REACT_APP_API_URL //enviroment variable for api 
-const host = "https://flyzon-backend-api.onrender.com"
+const host = process.env.REACT_APP_API_URL //enviroment variable for api 
+// const host = "https://flyzon-backend-api.onrender.com"
 
 // Fetching cart items from db
 export const getCartItems = createAsyncThunk('getCartItems', async () => {
