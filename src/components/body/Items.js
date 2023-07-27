@@ -28,7 +28,7 @@ const Items = (props) => {
                         <img src={`${images[0]}`} alt="Product" className="w-full h-40 object-contain" />
                     </div>
                     <div className="px-6 pt-4">
-                        <div className="font-bold max-h-10 text-lg mb-2">{`${productTitle.slice(0, 20)}${(productTitle.length > 20) ? "..." : ""}`}</div>
+                        <div className="font-bold max-h-10 text-lg mb-2">{`${productTitle.slice(0, 25)}${(productTitle.length > 20) ? "..." : ""}`}</div>
                         {/* <p className="text-gray-700 text-base">Product description goes here. Lorem ipsum dolor sit amet,
                             consectetur adipiscing elit.</p> */}
                     </div>

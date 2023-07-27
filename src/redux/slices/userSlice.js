@@ -44,7 +44,7 @@ export const loginUser = createAsyncThunk('loginUser', async ({ credentials }) =
 
 // 3.Getting user details if use logged in
 export const getUserDetails = createAsyncThunk("getUserDetails", async (_, { getState }) => {
-    
+
     // getState is second argument of createAsyncThunk function use to access state of the slice 
     const authToken = getState().user.authToken;
 
@@ -119,7 +119,7 @@ const userSlice = createSlice({
                 state.authToken = action.payload.token
                 state.login = action.payload.login
                 state.user = action.payload.User
-            
+
                 localStorage.setItem("authToken", action.payload.token)
                 state.error = false
             }

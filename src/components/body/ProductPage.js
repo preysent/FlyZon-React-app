@@ -59,7 +59,8 @@ const ProductPage = () => {
                 <section className={`flex justify-center ${(mode === 'dark') ? "bg-purple-950 text-white" : ""}`}>
                     <div className="container  flex justify-center lg:justify-start relative flex-wrap lg:flex-nowrap">
 
-                        <div>
+                        {/* image section  */}
+                        <div className='lg:w-4/12'>
                             <img src={`${item.images[0]}`} alt="pro" className='max-h-[30rem]' />
                         </div>
 
@@ -71,7 +72,8 @@ const ProductPage = () => {
                             </svg>
                         </div>
 
-                        <div className="p-8">
+                        {/* title and discription sectin  */}
+                        <div className="p-8 w-full lg:w-8/12">
                             <h4 className="font-semibold text-2xl py-4">{`${item.productTitle}`}
                             </h4>
                             <p className="pb-2 text-lg">Only ${`${item.price}/-`}</p>

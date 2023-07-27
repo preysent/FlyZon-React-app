@@ -23,6 +23,15 @@ const AdminNavbar = () => {
                         <li className="sm:mb-4">
                             <Link to={`${match.url}/orderManagement`} className="block px-4 py-2 rounded hover:bg-purple-700">Order </Link>
                         </li>
+                        <li className="sm:mb-4">
+                            <Link to={`/`} className="flex items-center px-2 py-2 rounded hover:bg-purple-700">
+
+                                <svg className='fill-white w-8' viewBox="0 0 24 24">
+                                    <path d="M14 7l-5 5 5 5V7z" />
+                                </svg>
+                                <p>Back</p>
+                            </Link>
+                        </li>
                         {/* Add more relevant links as needed */}
                     </ul>
 

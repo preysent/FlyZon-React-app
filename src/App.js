@@ -37,7 +37,7 @@ function App() {
           </Route>
 
 
-          <Route exact path='/'>
+          <Route  path='/'>
             <div className='flex flex-col min-h-screen'>
               <Head />
               <Main />
