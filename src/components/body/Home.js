@@ -19,8 +19,7 @@ const Home = () => {
 
   // loading the products after cpmponent render
   useEffect(() => {
-    dispatch(fetchProducts()); // fetch the products
-
+    dispatch(fetchProducts("Electronics")); // fetch the products
   }, [dispatch]);
 
 

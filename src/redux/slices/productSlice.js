@@ -3,8 +3,8 @@ const host = process.env.REACT_APP_API_URL //enviroment variable for api
 // const host = "https://flyzon-backend-api.onrender.com" 
 
 // creating async action to fetch product
-export const fetchProducts = createAsyncThunk('fetchProduct', async () => {
-    const responce = await fetch(`${host}/api/product/fetch/Electronics`)
+export const fetchProducts = createAsyncThunk('fetchProduct', async (ctgry) => {
+    const responce = await fetch(`${host}/api/product/fetch/${ctgry}`)
     return responce.json()
 })
 
@@ -35,7 +35,7 @@ const productSlice = createSlice({
     //extra reducers use for async funtion result case
     extraReducers: (builder) => {
 
-        // case for loading home page
+        // case for loading products by category
         builder.addCase(fetchProducts.fulfilled, (state, action) => {
             state.items = action.payload
             state.product = null // whenaver we come back to home page product details = NULL

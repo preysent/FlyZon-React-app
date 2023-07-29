@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addNewProduct } from '../../../redux/slices/sellerSlice'
 
@@ -6,24 +6,20 @@ const ProductAdd = () => {
 
     const dispatch = useDispatch()
     //initial state of form elemnt
-    const [credentials, setCredentials] = useState({
-        productTitle: "",
-        des: "",
-        price: "",
-        brand: "",
-        category: "",
-        stock: "",
-        img: ""
-
-    })
-
+    const [credentials, setCredentials] = useState({ productTitle: "", des: "", price: "", brand: "", category: "", stock: "", img: "" })
 
     const { productTitle, des, price, brand, category, stock, img } = credentials
 
 
+    // onchange handle input 
     const onchange = (event) => {
         setCredentials({ ...credentials, [event.target.name]: event.target.value })
     }
+    // Event handler for the select element
+    const handleSelectChange = (event) => {
+        const cat = event.target.value
+        setCredentials({ ...credentials, category: cat })
+    };
 
 
     const handleSubmit = async (e) => {
@@ -33,24 +29,21 @@ const ProductAdd = () => {
         let description = des.split("\n")
         description = description.filter((vl) => { return vl.length > 0 })
 
-
         // Regular expression to match links
         const linkPattern = /https?:\/\/\S+/gi;
-
         let images = img.split("\n")
         images = images.filter((link) => { // Only return Link
             return linkPattern.test(link)
         })
 
-        console.log("dispatch called")
-        // creating acrion for adding product 
+
+        // creating action for adding product 
         const res = await dispatch(addNewProduct({ productTitle, price, brand, category, stock, description, images }))
 
         if (res.payload.status) {
             alert("product created sussefully")
-            setCredentials({
-                productTitle: "", des: "", price: "", brand: "", category: "", stock: "", img: ""
-            })
+            setCredentials({ productTitle: "", des: "", price: "", brand: "", category: "", stock: "", img: "" })
+
         } else {
             alert("!..Failed to create product")
         }
@@ -90,7 +83,14 @@ const ProductAdd = () => {
                     <div className="flex flex-wrap -mx-3 mb-2">
                         <div className="w-1/2 px-3">
                             <label htmlFor="category" className="block text-gray-700 font-semibold">Category</label>
-                            <input onChange={onchange} type="text" id="category" value={category} name="category" required className="w-full p-2 border rounded" />
+                            <select id="category" name="category" className="w-full p-2 border rounded" onChange={handleSelectChange} value={category} required>
+                                <option value="">Select a category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Mobile">Mobile</option>
+                                <option value="Grocery">Grocery</option>
+                                <option value="Appliances">Appliances</option>
+                            </select>
                         </div>
                         <div className="w-1/2 px-3">
                             <label htmlFor="stock" className="block text-gray-700 font-semibold">Stock</label>
@@ -105,8 +105,9 @@ const ProductAdd = () => {
 
                     </div>
                     <div className="flex justify-end">
-                        <button type="submit"
-                            className="bg-purple-700 text-white font-semibold px-4 py-2 rounded hover:bg-purple-600">Add Product</button>
+                        <button type="submit" className="bg-purple-700 text-white font-semibold px-4 py-2 rounded hover:bg-purple-600">
+                            Add Product
+                        </button>
                     </div>
                 </form>
             </section>

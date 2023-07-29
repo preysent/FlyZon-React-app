@@ -24,8 +24,8 @@ const Items = (props) => {
 
                 {/* redirect to the product page with item id */}
                 <Link to={`/product/${item._id}`}>
-                    <div className='w-full h-auto bg-white'>
-                        <img src={`${images[0]}`} alt="Product" className="w-full h-40 object-contain" />
+                    <div className='w-full h-auto bg-white p-4 '>
+                        <img src={`${images[0]}`} alt="Product" className="hover:scale-110 h-70 w-full h-40 object-contain" />
                     </div>
                     <div className="px-6 pt-4">
                         <div className="font-bold max-h-10 text-lg mb-2">{`${productTitle.slice(0, 25)}${(productTitle.length > 20) ? "..." : ""}`}</div>

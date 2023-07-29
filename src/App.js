@@ -22,7 +22,7 @@ function App() {
         <Switch>
 
           {/* route for admin panel  */}
-          <Route  path="/admin">
+          <Route  path="/admin/5138">
             <Admin />
           </Route>
           

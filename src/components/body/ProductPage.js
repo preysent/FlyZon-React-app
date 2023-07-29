@@ -60,7 +60,7 @@ const ProductPage = () => {
                     <div className="container  flex justify-center lg:justify-start relative flex-wrap lg:flex-nowrap">
 
                         {/* image section  */}
-                        <div className='lg:w-4/12'>
+                        <div className='lg:w-4/12 p-4'>
                             <img src={`${item.images[0]}`} alt="pro" className='max-h-[30rem]' />
                         </div>
 

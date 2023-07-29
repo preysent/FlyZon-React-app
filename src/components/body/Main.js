@@ -1,11 +1,7 @@
 import React from 'react'
 import Home from './Home'
 import ProductPage from './ProductPage';
-
-import {
-  Switch,
-  Route,
-} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Cart from './cart/Cart';
 import Order from './Order';
 
@@ -16,7 +12,7 @@ const Main = () => {
   return (
     <div className='flex-grow'>
       <Switch>
-        
+
         <Route exact path={`/product/:id`}>
           <ProductPage />
         </Route>
@@ -29,7 +25,7 @@ const Main = () => {
           <Order />
         </Route>
 
-        <Route exact path="/">          
+        <Route exact path="/">
           <Home />
         </Route>
 
