@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { getProductList } from '../../../redux/slices/sellerSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import Loading from '../../body/Loading'

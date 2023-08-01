@@ -15,7 +15,7 @@ const Home = () => {
   const dispatch = useDispatch()
 
   let  mode = useSelector(store => store.mode)
-  const products = useSelector(store => store.products)
+  const items = useSelector(store => store.products.items)
 
   // loading the products after cpmponent render
   useEffect(() => {
@@ -28,11 +28,11 @@ const Home = () => {
       <ImageSlider />
       <section className={`${(mode === 'dark') ? 'bg-purple-900' : 'bg-fuchsia-200'}`} id="body">
 
-        {(!products.items.length > 0)
+        {(!items.length > 0)
           ? <Loading />
           : <div className="container grid sm:grid-cols-3 lg:grid-cols-4 m-auto gap-4 p-4 justify-center">
             {
-              products.items.map((item) => (
+              items.map((item) => (
                 <Items key={item._id} item={item} />
               ))
             }

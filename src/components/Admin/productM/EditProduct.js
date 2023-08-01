@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 
 const EditProduct = (props) => {
 
@@ -10,22 +10,6 @@ const EditProduct = (props) => {
         (modal === "hidden") ? setModal("") : setModal("hidden")
     }
 
-    // useEffect(() => {
-    //     const editModal = document.getElementById(`${props.id}Md`)
-    //     const editModalForm = document.getElementById(`${props.id}Form`)
-
-    //     window.addEventListener("click", (event) => {
-    //         console.log(editModal.contains(event.target),"-",editModalForm.contains(event.target))
-    //         console.log(event.target)
-    //         console.log(editModal.firstElementChild)
-    //         if (!editModal.contains(event.target)&&!editModalForm.contains(event.target)) {
-
-    //             console.log("---------- toggle ")
-    //         }
-    //     })
-
-
-    // }, [modal])
 
     return (
         <>

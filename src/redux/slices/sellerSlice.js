@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const host = process.env.REACT_APP_API_URL
+// const host = "https://flyzon-backend-api.onrender.com" 
 
 
 // fucntin to getting product list of the seller

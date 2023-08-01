@@ -2,7 +2,6 @@ import React from 'react'
 import AdminNavbar from './AdminNavbar'
 import ProductManagement from './productM/ProductManagement'
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   useRouteMatch
