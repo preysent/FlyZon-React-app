@@ -11,7 +11,7 @@ const ProductListFilds = (props) => {
                     {`${product._id}`.slice(17)}</td>
                 <td
                     className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 font-medium text-gray-700 capitalize tracking-wider">
-                    {product.productTitle}</td>
+                    {product.productTitle.slice(0,40)}{product.productTitle.length>40?'...':''}</td>
                 <td
                     className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 font-medium text-gray-700 capitalize tracking-wider">
                     {product.category}</td>

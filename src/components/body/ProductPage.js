@@ -32,6 +32,21 @@ const ProductPage = () => {
     }
 
 
+    const handleChangeImage = (e) => {
+        const img = document.getElementById("mainImg")
+        img.src = e.target.src
+
+        const list = document.getElementsByClassName('imgLst')
+        const imgs = Array.from(list)     // convert html collection to array
+
+        imgs.forEach(element => {
+            element.classList.remove('border')
+        });
+
+        e.target.classList.add('border')
+    }
+
+
     // Order one product 
     const handleBuyNow = async () => {
 
@@ -60,8 +75,22 @@ const ProductPage = () => {
                     <div className="container  flex justify-center lg:justify-start relative flex-wrap lg:flex-nowrap">
 
                         {/* image section  */}
-                        <div className='lg:w-4/12 p-4'>
-                            <img src={`${item.images[0]}`} alt="pro" className='max-h-[30rem]' />
+                        <div className='lg:w-5/12 p-4 flex flex-col justify-between '>
+
+                            <div className='h-[25rem] object-contain flex justify-center items-center gap-1'>
+                                <img id='mainImg' src={`${item.images[0]}`} alt="pro" className='max-w-full max-h-full' />
+                            </div>
+
+                            <div className='flex gap-1'>
+                                {item.images.map((img) => {
+
+                                    return <div className='max-h-[7rem]  border-purple-500 outline-4 imgLst ' >
+                                        <img src={img} onClick={handleChangeImage} alt="pro" className='max-h-full' />
+                                    </div>
+
+                                })}
+                            </div>
+
                         </div>
 
                         <div className="absolute top-5 left-5">
@@ -73,7 +102,7 @@ const ProductPage = () => {
                         </div>
 
                         {/* title and discription sectin  */}
-                        <div className="p-8 w-full lg:w-8/12">
+                        <div className="p-8 w-full lg:w-7/12">
                             <h4 className="font-semibold text-2xl py-4">{`${item.productTitle}`}
                             </h4>
                             <p className="pb-2 text-lg">Only ${`${item.price}/-`}</p>
