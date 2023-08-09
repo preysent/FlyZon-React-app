@@ -2,10 +2,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const host = process.env.REACT_APP_API_URL //enviroment variable for api
 // const host = "https://flyzon-backend-api.onrender.com" 
 
-// creating async action to fetch product
-export const fetchProducts = createAsyncThunk('fetchProduct', async (ctgry) => {
+// creating async action to fetch product  |  search products
+export const fetchProducts = createAsyncThunk('fetchProduct', async ({ctgry, searchStr}) => {
+    if(ctgry){
     const responce = await fetch(`${host}/api/product/fetch/${ctgry}`)
     return responce.json()
+    }
+    else{
+        const responce = await fetch(`${host}/api/product/search/${searchStr}`)
+        return responce.json()
+    }
 })
 
 
@@ -14,6 +20,9 @@ export const fetchOneProduct = createAsyncThunk('fetchOneProduct', async (id) =>
     const responce = await fetch(`${host}/api/product/${id}`)
     return responce.json()
 })
+
+
+
 
 
 

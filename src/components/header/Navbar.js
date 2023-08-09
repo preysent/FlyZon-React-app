@@ -12,7 +12,7 @@ const Navbar = () => {
 
     const handleCategory = (ctgry)=>{
         console.log(ctgry)
-        dispatch(fetchProducts(ctgry))
+        dispatch(fetchProducts({ctgry}))
     }
 
     return (

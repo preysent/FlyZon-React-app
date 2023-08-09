@@ -13,12 +13,13 @@ const Main = () => {
   // loading the products after cpmponent render
   const dispatch = useDispatch();
   useEffect(()=>{
-    dispatch(fetchProducts('Electronics'))
+    const ctgry = 'Electronics'
+    dispatch(fetchProducts({ctgry}))
   },[])
 
 
   return (
-    <div className='flex-grow'>
+    <div className='flex-grow flex justify-center items-center flex-col'>
       <Switch>
 
         <Route exact path={`/product/:id`}>

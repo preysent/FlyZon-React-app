@@ -50,7 +50,7 @@ const ImageSlider = () => {
 
     return (
         <>
-            <section className=" mx-auto flex items-center justify-center h-60 relative overflow-hidden">
+            <section className=" mx-auto flex items-center justify-center h-60 w-full relative overflow-hidden">
 
                 <div className=" w-full h-full bg-cover absolute" id="slide-1"></div>
                 <div className=" w-full h-full bg-cover absolute" id="slide-2"></div>

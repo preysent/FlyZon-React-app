@@ -1,10 +1,11 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleMode } from '../../redux/slices/modeSlice'
 
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import UserSlide from './UserSlide';
+import { fetchProducts } from '../../redux/slices/productSlice';
 
 
 const Hedr = () => {
@@ -13,6 +14,7 @@ const Hedr = () => {
     const User = user.user
     const history = useHistory()
     const dispatch = useDispatch()
+    const [searchStr, setSearchStr] = useState('')
 
     // take to login page
     const handleLogin = () => {
@@ -30,6 +32,18 @@ const Hedr = () => {
         history.push("/cart")
     }
 
+        
+    // handle searc
+    const onchange = (e)=>{
+        setSearchStr(e.target.value)
+    }
+    const handleSubmit = (e)=>{
+        e.preventDefault()
+        dispatch(fetchProducts({searchStr}))
+        setSearchStr('')
+    }
+
+
     return (
         <>
             <section className={`flex items-center flex-col ${(mode === "dark") ? "bg-purple-950" : "bg-purple-600"}`}>
@@ -39,9 +53,22 @@ const Hedr = () => {
                         <Link className="underline cursor-pointer" to="/"> FlyZon </Link>
                     </div>
 
-                    <form action="" className="w-5/12 rounded hidden md:flex">
-                        <input type="text" placeholder="Search at FlyZon" className={`w-full p-2 rounded focus:outline-none focus:ring focus:ring-violet-300  ${(mode === "dark") ? "bg-purple-400 placeholder-white" : ""}`} />
+
+                    <form onSubmit={handleSubmit} className="w-5/12 rounded hidden md:flex">
+                        <input onChange={onchange} type="text" placeholder="Search at FlyZon" value={searchStr}
+                        className={`w-full p-2 rounded focus:outline-none focus:ring focus:ring-violet-300  ${(mode === "dark") ? "bg-purple-400 placeholder-white" : ""}`} />
+
+                        <button type='submit' className={`flex justify-center items-center p-2 px-4 rounded-md text-white`}>
+
+                            {/* search icon  */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+
+                        </button>
                     </form>
+
+
 
                     <div className=" flex justify-end md:w-5/12 items-center ">
 
