@@ -1,27 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Items from './Items'
 import Loading from './Loading'
 import ImageSlider from './ImageSlider'
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchProducts } from '../../redux/slices/productSlice'
-
-
-
+import { useSelector } from 'react-redux'
 
 
 const Home = () => {
 
-  // function wich use to change the state
-  const dispatch = useDispatch()
-
   let  mode = useSelector(store => store.mode)
   const items = useSelector(store => store.products.items)
-
-  // loading the products after cpmponent render
-  useEffect(() => {
-    dispatch(fetchProducts("Electronics")); // fetch the products
-  }, [dispatch]);
-
 
   return (
     <>

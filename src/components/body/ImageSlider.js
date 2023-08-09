@@ -16,13 +16,11 @@ const ImageSlider = () => {
 
 
         const interval = setInterval(() => {
-
             // here is another way of change state bassed on previous state 
             setCounter((prevCounter) => {
                 const newCounter = prevCounter + 1;
                 return newCounter > 2 ? 0 : newCounter;
             })           
-
         }, 5000);
 
         return () => clearInterval(interval);
