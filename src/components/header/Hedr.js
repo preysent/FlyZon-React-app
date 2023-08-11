@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleMode } from '../../redux/slices/modeSlice'
 
@@ -15,6 +15,14 @@ const Hedr = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const [searchStr, setSearchStr] = useState('')
+    const [searchBar, setSearchBar] = useState('hidden')
+
+    // toggle visiblity of moblie searchBar 
+    const toggleSearchBar = () => {
+        (searchBar === "hidden")
+            ? setSearchBar("")
+            : setSearchBar("hidden")
+    }
 
     // take to login page
     const handleLogin = () => {
@@ -32,14 +40,14 @@ const Hedr = () => {
         history.push("/cart")
     }
 
-        
+
     // handle searc
-    const onchange = (e)=>{
+    const onchange = (e) => {
         setSearchStr(e.target.value)
     }
-    const handleSubmit = (e)=>{
+    const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch(fetchProducts({searchStr}))
+        dispatch(fetchProducts({ searchStr }))
         setSearchStr('')
     }
 
@@ -53,10 +61,10 @@ const Hedr = () => {
                         <Link className="underline cursor-pointer" to="/"> FlyZon </Link>
                     </div>
 
-
+                    {/* search bar */}
                     <form onSubmit={handleSubmit} className="w-5/12 rounded hidden md:flex">
                         <input onChange={onchange} type="text" placeholder="Search at FlyZon" value={searchStr}
-                        className={`w-full p-2 rounded focus:outline-none focus:ring focus:ring-violet-300  ${(mode === "dark") ? "bg-purple-400 placeholder-white" : ""}`} />
+                            className={`w-full p-2 rounded focus:outline-none focus:ring focus:ring-violet-300  ${(mode === "dark") ? "bg-purple-400 placeholder-white" : ""}`} />
 
                         <button type='submit' className={`flex justify-center items-center p-2 px-4 rounded-md text-white`}>
 
@@ -68,9 +76,17 @@ const Hedr = () => {
                         </button>
                     </form>
 
-
-
                     <div className=" flex justify-end md:w-5/12 items-center ">
+
+
+                        {/* search button for mobile divice  */}
+                        <button onClick={toggleSearchBar} className='md:hidden text-white mx-2'>
+                            {/* search icon  */}
+                            <svg xmlns="http://www.w3.org/2000/svg" height="17" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </button>
+
 
                         <svg
                             className=" text-white p-1 m-1 w-8 font-medium bi bi-moon-stars"
@@ -120,6 +136,18 @@ const Hedr = () => {
                     </div>
 
                 </header>
+
+                {/* search bar on small divice*/}
+                <form onSubmit={handleSubmit} className={`${searchBar} w-full rounded md:hidden flex justify-center m-1 bg-white`}>
+                    <input onChange={onchange} type="text" placeholder="Search at FlyZon" value={searchStr}
+                        className={`w-full p-2 rounded focus:outline-none focus:ring focus:ring-violet-300  ${(mode === "dark") ? "bg-purple-400 placeholder-white" : ""}`} />
+
+                    <button onClick={toggleSearchBar} type='submit' className={`flex justify-center items-center p-2 px-4 rounded-md `}>
+                        X
+                    </button>
+                </form>
+
+
             </section>
         </>
     )
