@@ -11,12 +11,16 @@ const OrderSummary = (props) => {
 
 
     const handleCheckout = async () => {
-        const object = { products: user.cart, totalAmount: subtotal, shippingAddress: user.address }
-        const Response = await dispatch(placeOrder({object}))
+        if (!user.login)
+            alert("Login to Checkout")
+        else {
+            const object = { products: user.cart, totalAmount: subtotal, shippingAddress: user.address }
+            const Response = await dispatch(placeOrder({ object }))
 
-        if(Response.payload.status === "ok") {
-            dispatch(getUserDetails())
-            dispatch(getCartItems())
+            if (Response.payload.status === "ok") {
+                dispatch(getUserDetails())
+                dispatch(getCartItems())
+            }
         }
     }
     return (

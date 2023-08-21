@@ -24,7 +24,7 @@ const ProductListFilds = (props) => {
                 <td 
                     className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 font-medium text-gray-700 uppercase tracking-wider">
 
-                    <EditProduct id={product._id}/>
+                    <EditProduct product={product}/>
                     
                 </td>
             </tr>

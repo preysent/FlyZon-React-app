@@ -28,7 +28,9 @@ const ProductPage = () => {
 
     //adding product to cart 
     const handleAddToCart = () => {
-        dispatch(addToCart({ productId: item._id }))
+        if (!User)
+            alert("Login to continue")
+        else  dispatch(addToCart({ productId: item._id }))
     }
 
 
@@ -50,18 +52,22 @@ const ProductPage = () => {
     // Order one product 
     const handleBuyNow = async () => {
 
-        const productId = item._id
-        const quantity = 1
-        const products = [{ productId, quantity }]
-        const totalAmount = item.price
-        const shippingAddress = User.address
-        const type = "one"
-        const object = { products, totalAmount, shippingAddress }
+        if (!User)
+            alert("Login to Place Order")
+        else {
+            const productId = item._id
+            const quantity = 1
+            const products = [{ productId, quantity }]
+            const totalAmount = item.price
+            const shippingAddress = User.address
+            const type = "one"
+            const object = { products, totalAmount, shippingAddress }
 
-        const responce = await dispatch(placeOrder({ object, type }))
+            const responce = await dispatch(placeOrder({ object, type }))
 
-        if (responce.payload.status === "ok")
-            dispatch(getUserDetails())
+            if (responce.payload.status === "ok")
+                dispatch(getUserDetails())
+        }
     }
 
 

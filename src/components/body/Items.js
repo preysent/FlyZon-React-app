@@ -6,11 +6,14 @@ import { addToCart } from '../../redux/slices/userSlice'
 
 const Items = (props) => {
 
-    let { mode } = useSelector(store => store)
+    let { mode, user } = useSelector(store => store)
     const item = props.item
     const dispatch = useDispatch()
 
     const handleAddToCart = () => {
+        if (!user.login)
+        alert("Login to continue")
+        else 
         dispatch(addToCart({ productId: item._id }))
     }
 

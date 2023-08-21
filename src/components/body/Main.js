@@ -15,7 +15,7 @@ const Main = () => {
   useEffect(()=>{
     const ctgry = 'Electronics'
     dispatch(fetchProducts({ctgry}))
-  },[])
+  },[dispatch])
 
 
   return (
