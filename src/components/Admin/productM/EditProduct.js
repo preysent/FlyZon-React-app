@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import { updateProduct } from '../../../redux/slices/sellerSlice'
+import { useDispatch } from 'react-redux'
 
 const EditProduct = (props) => {
 
     const { product } = props
+    const dispatch = useDispatch()
 
 
     // modal state for edit product option
@@ -16,12 +19,12 @@ const EditProduct = (props) => {
 
     const [credentials, setCredentials] = useState({
         productTitle: product.productTitle,
-        des: product.description,
+        des: product.description.join('\n'),
         price: product.price,
         brand: product.brand,
         category: product.category,
         stock: product.stock,
-        img: product.images
+        img: product.images.join('\n')
     })
 
 
@@ -31,7 +34,7 @@ const EditProduct = (props) => {
     // onchange handle input 
     const onchange = (event) => {
         setCredentials({ ...credentials, [event.target.name]: event.target.value })
-       
+
     }
     // Event handler for the select element
     const handleSelectChange = (event) => {
@@ -39,6 +42,33 @@ const EditProduct = (props) => {
         setCredentials({ ...credentials, category: cat })
     };
 
+    // handle form submition
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        // converting string to array of values 
+        let description = des.split("\n")
+        description = description.filter((vl) => { return vl.length > 0 })
+
+        // Regular expression to match links
+        const linkPattern = /https:\/\/\S+/i;
+        let Images = img.split("\n")
+        let images = Images.filter((link) => { // Only return Link
+            return linkPattern.test(link)
+        })
+
+        console.log("images are :",images)
+
+        // creating action for adding product 
+        const res = await dispatch(updateProduct({details:{ productTitle, price, brand, category, stock, description, images },id:product._id}))
+
+        if (res.payload.status) {            
+            alert("product created sussefully")
+        } else {
+            alert("!..Failed to create product")
+        }
+
+    }
 
     return (
         <>
@@ -55,7 +85,7 @@ const EditProduct = (props) => {
                     <div className="flex justify-end mt-4">
 
                         {/* form for edit product  */}
-                        <form className='w-full'>
+                        <form onSubmit={handleSubmit} className='w-full'>
 
                             {/* Form fields for adding a new product  */}
                             <div className="flex flex-wrap -mx-3 mb-2">
@@ -67,10 +97,10 @@ const EditProduct = (props) => {
                             <div className="flex flex-wrap -mx-3 mb-2">
                                 <div className="w-full px-3">
                                     <label htmlFor="des" className="block text-gray-700 font-semibold">Product Description</label>
-                                    <textarea onChange={onchange} id="des" name="des" value={des.join("\n\n")} required className="w-full p-2 border rounded" placeholder='New point in new line'></textarea>
+                                    <textarea onChange={onchange} id="des" name="des" value={des} required className="w-full p-2 border rounded" placeholder='New point in new line'></textarea>
                                 </div>
                             </div>
-                            
+
                             <div className="flex flex-wrap -mx-3 mb-2">
                                 <div className="w-1/2 px-3">
                                     <label htmlFor="price" className="block text-gray-700 font-semibold">Price</label>
@@ -101,18 +131,15 @@ const EditProduct = (props) => {
                             <div className="flex flex-wrap -mx-3 mb-2">
                                 <div className="w-full px-3">
                                     <label htmlFor="img1" className="block text-gray-700 font-semibold">Images</label>
-                                    <textarea onChange={onchange} type="text" id="img" name="img" value={img.join("\n")} required className="w-full p-2 border rounded" placeholder='Only for image links | New link in new line' ></textarea>
+                                    <textarea onChange={onchange} type="text" id="img" name="img" value={img} required className="w-full p-2 border rounded" placeholder='Only for image links | New link in new line' ></textarea>
                                 </div>
 
                             </div>
-                            <div className="flex justify-end">
-                                <button type="submit" className="bg-purple-700 text-white font-semibold px-4 py-2 rounded hover:bg-purple-600">
-                                    Add Product
-                                </button>
-                            </div>
+
 
                             <button id="updateProductBtn"
                                 onClick={toggleModal}
+                                type='submit'
                                 className="bg-purple-700 text-white font-semibold px-4 py-2 rounded hover:bg-purple-600">Update
                                 Product</button>
 

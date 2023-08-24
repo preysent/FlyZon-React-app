@@ -1,8 +1,9 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Items from './Items'
 import Loading from './Loading'
 import ImageSlider from './ImageSlider'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProducts } from '../../redux/slices/productSlice'
 
 
 const Home = () => {
@@ -10,6 +11,14 @@ const Home = () => {
   let mode = useSelector(store => store.mode)
   const productState = useSelector(store => store.products)
   const items = productState.items
+
+
+  // loading the products after cpmponent render
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    const ctgry = 'Electronics'
+    dispatch(fetchProducts({ctgry}))
+  },[dispatch])
 
   return (
     <>

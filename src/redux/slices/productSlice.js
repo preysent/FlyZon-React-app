@@ -3,7 +3,7 @@ const host = process.env.REACT_APP_API_URL //enviroment variable for api
 // const host = "https://flyzon-backend-api.onrender.com" 
 
 // creating async action to fetch product  |  search products
-export const fetchProducts = createAsyncThunk('fetchProduct', async ({ctgry, searchStr}) => {
+export const fetchProducts = createAsyncThunk('fetchProducts', async ({ctgry, searchStr}) => {
     if(ctgry){
     const responce = await fetch(`${host}/api/product/fetch/${ctgry}`)
     return responce.json()

@@ -52,7 +52,7 @@ const Order = () => {
                                                     key={image}
                                                     src={image}
                                                     alt={product.productTitle}
-                                                    className="w-32 h-32 object-cover rounded"
+                                                    className="w-32 h-32  rounded object-contain"
                                                 />
                                             ))}
                                         </div>
