@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const host = process.env.REACT_APP_API_URL //enviroment variable for api
-// const host = "https://flyzon-backend-api.onrender.com" 
+ 
 
 // creating async action to fetch product  |  search products
 export const fetchProducts = createAsyncThunk('fetchProducts', async ({ctgry, searchStr}) => {
