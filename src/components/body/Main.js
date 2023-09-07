@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Home from './Home'
 import ProductPage from './ProductPage';
 import { Switch, Route } from "react-router-dom";
