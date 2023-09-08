@@ -11,7 +11,7 @@ const OrderSummary = (props) => {
 
 
     const handleCheckout = async () => {
-        if (!user.login)
+        if (!user)
             alert("Login to Checkout")
         else {
             const object = { products: user.cart, totalAmount: subtotal, shippingAddress: user.address }
