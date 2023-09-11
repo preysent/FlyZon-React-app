@@ -12,11 +12,11 @@ const OrderSummary = (props) => {
 
 
     const handleCheckout = async () => {
+
         if (!user){
             dispatch(toggleAlert('login to Checkout'))
             setTimeout(()=>{ dispatch(toggleAlert())},1500)
         }
-
         else {
             const object = { products: user.cart, totalAmount: subtotal, shippingAddress: user.address }
             const Response = await dispatch(placeOrder({ object }))
