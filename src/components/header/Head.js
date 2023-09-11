@@ -3,6 +3,7 @@ import Header from './Hedr'
 import Navbar from './Navbar'
 import { getUserDetails } from '../../redux/slices/userSlice'
 import { useDispatch } from 'react-redux'
+import Alert from './Alert'
 
 const Head = () => {
 
@@ -14,6 +15,7 @@ const Head = () => {
 
   return (
     <div>
+      <Alert/>
       <Header />
       <Navbar />
     </div>

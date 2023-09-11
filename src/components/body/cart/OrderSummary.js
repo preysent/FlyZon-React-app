@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { placeOrder } from '../../../redux/slices/orderSlice'
 import { getUserDetails } from '../../../redux/slices/userSlice'
 import { getCartItems } from '../../../redux/slices/cartSllice'
+import { toggleAlert } from '../../../redux/slices/alert'
 
 const OrderSummary = (props) => {
     const { subtotal, mode } = props
@@ -11,8 +12,11 @@ const OrderSummary = (props) => {
 
 
     const handleCheckout = async () => {
-        if (!user.login)
-            alert("Login to Checkout")
+        if (!user){
+            dispatch(toggleAlert('login to Checkout'))
+            setTimeout(()=>{ dispatch(toggleAlert())},1500)
+        }
+
         else {
             const object = { products: user.cart, totalAmount: subtotal, shippingAddress: user.address }
             const Response = await dispatch(placeOrder({ object }))

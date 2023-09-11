@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { addToCart } from '../../redux/slices/userSlice'
+import { toggleAlert } from '../../redux/slices/alert'
 
 
 const Items = (props) => {
@@ -12,8 +13,10 @@ const Items = (props) => {
     const dispatch = useDispatch()
 
     const handleAddToCart = () => {
-        if (!user.login)
-            alert("Login to continue")
+        if (!user.login){
+            dispatch(toggleAlert('login to continue'))
+            setTimeout(()=>{ dispatch(toggleAlert())},1500)
+        }
         else
             dispatch(addToCart({ productId: item._id }))
     }

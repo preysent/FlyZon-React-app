@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from './Loading';
 import { addToCart, getUserDetails } from '../../redux/slices/userSlice';
 import { placeOrder } from '../../redux/slices/orderSlice';
+import { toggleAlert } from '../../redux/slices/alert';
 
 
 const ProductPage = () => {
@@ -28,8 +29,10 @@ const ProductPage = () => {
 
     //adding product to cart 
     const handleAddToCart = () => {
-        if (!User)
-            alert("Login to continue")
+        if (!User){
+            dispatch(toggleAlert('login to continue'))
+            setTimeout(()=>{ dispatch(toggleAlert())},1500)
+        }
         else  dispatch(addToCart({ productId: item._id }))
     }
 
@@ -52,8 +55,10 @@ const ProductPage = () => {
     // Order one product 
     const handleBuyNow = async () => {
 
-        if (!User)
-            alert("Login to Place Order")
+        if (!User){
+            dispatch(toggleAlert('login to place the order'))
+            setTimeout(()=>{ dispatch(toggleAlert())},1500)
+        }
         else {
             const productId = item._id
             const quantity = 1
